@@ -1,0 +1,7 @@
+only update when target (result of input row) has one
+
+weight update = U(weight*input^-T) * input dot
+
+input x = [784]
+weights = [10x784]
+target = [10]

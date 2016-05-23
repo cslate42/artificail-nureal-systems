@@ -1,0 +1,3 @@
+
+def goodbye():
+    print("Bye")
