@@ -17,7 +17,7 @@ def main():
     print("--------------------TEST DATA-------------------")
     m.test()
 
-    m.printTrainingDataInfo();
+    # m.printTrainingDataInfo();
 
     return
 

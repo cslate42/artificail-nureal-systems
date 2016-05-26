@@ -6,13 +6,13 @@ def unitStep(x):
     """ 1 if > 0 else 0 """
     return 1 if x > 0 else 0
 
-def create( n = 1 ):
+def create( n = 1, sizeOfData = 1 ):
     """
     create 'n' perceptrons and return array
     """
     perceptrons = []
     for i in range(n):
-        perceptrons.append( perceptron() )
+        perceptrons.append( perceptron(sizeOfData) )
     return perceptrons
 
 class perceptron(object):
@@ -27,12 +27,12 @@ class perceptron(object):
     # TODO remove??? dont think needed since multitron runs?
     interations = 100
 
-    def __init__(self):
+    def __init__(self, sizeOfData):
         """
         create variables
         set
         """
-        self.weights = np.random.rand(10)#np.random.rand(weights)
+        self.weights = np.random.rand( sizeOfData )#np.random.rand(weights)
 
         return
 
@@ -66,6 +66,14 @@ class perceptron(object):
             # update weights
             self.weights += self.learningRate * error * inputRow
         return
+
+    def isDataValid(self, data):
+        """
+        given a row of data return if rates
+        dotted with row is > 0 for true
+        returns 1 or 0
+        """
+        return unitStep( np.dot(data, self.weights) )
 
     def outputResults(data):
         """

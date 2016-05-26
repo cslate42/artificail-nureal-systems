@@ -56,11 +56,12 @@ class Multitron(object):
         self.validData = [(x,y)for x,y in zip (validX, validY)]
         self.testingData =  [(x,y)for x,y in zip (testX, testY)]
 
-        # print( "TRAINING", len(self.trainingData), "VALID", len(self.validData), "TESTING", len(self.testingData) )
+        # print( "TRAINING", len(self.trainingData), "VALID", len(self.validData), "TESTING", len(self.testingData), self.validData[0] )
         # exit(0);
 
+        sizeOfData = len( self.trainingData[0][0] )
         # array of perceptrons for each number
-        self.perceptrons = perceptron.create( self.numOfCharacters )
+        self.perceptrons = perceptron.create( self.numOfCharacters, sizeOfData )
         # print(self.trainingData[0][0].size)
         self.weights = np.random.rand( self.numOfCharacters )
         return
@@ -76,13 +77,17 @@ class Multitron(object):
         for i in range(numOfTrainingData):
             # train each character with training data row
             for j in range( self.numOfCharacters ):
-                self.perceptrons[j].train( self.trainingData[i][0], self.trainingData[i][1] )
+                trainingData = self.trainingData[i][0]
+                isCorrect = 1 if j == self.trainingData[i][1] else 0
+                self.perceptrons[j].train( trainingData, isCorrect )
 
             # every divisable peice of training data
             # redo weights with valid data
-            if( (i % numOfValidData) === 0 ):
-                for j in range( self.numOfCharacters ):
-                    # TODO figure out what has to be done for validation
+            if( (i % numOfValidData) == 0 ):
+                for j in range( len(self.validData) ):
+                    trainingData = self.validData[j][0]
+                    num = self.validData[j][1]
+                    self.perceptrons[ num ].train( trainingData, 1 )
 
         return
 
@@ -97,6 +102,14 @@ class Multitron(object):
         """
         go through testing data and show which ones output correct weights
         """
+        count = 0;
+        for i in range( len(self.testingData) ):
+            if( self.testingData[i][1] == 3 ):
+                count += 1
+                isValid = self.perceptrons[3].isDataValid(self.testingData[i][0])
+                print("\nRow[{}]: is3={} is8={}".format(count, isValid
+                    , self.perceptrons[8].isDataValid(self.testingData[i][0])
+                ) )
         return
 
     def printTrainingDataInfo(self):
